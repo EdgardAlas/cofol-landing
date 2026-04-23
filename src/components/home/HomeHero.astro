@@ -1,0 +1,32 @@
+---
+import SectionLabel from '../SectionLabel.astro';
+import Button from '../ui/Button.astro';
+import heroBackgrond from '../../assets/home-hero-bg.png';
+---
+
+<section
+  style={`background-image: url(${heroBackgrond.src})`}
+  class="bg-contain bg-top-right bg-no-repeat"
+  id="genesis"
+>
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="flex w-full max-w-225 flex-col gap-6 py-20 sm:gap-8 sm:py-32 lg:py-44">
+      <SectionLabel number="01" title="GENESIS" />
+      <h1
+        class="font-heading text-4xl leading-tight font-extrabold tracking-tighter text-neutral-950 sm:text-6xl sm:leading-16 lg:text-8xl lg:leading-24"
+      >
+        Optimizando tu futuro cono tecnología
+      </h1>
+
+      <p class="text-base leading-7 text-neutral-700 sm:text-xl sm:leading-8 lg:text-2xl">
+        Diseñamos biótopos digitales donde la fluidez cognitiva y el alto rendimiento convergen en
+        ecosistemas vivos de software.
+      </p>
+
+      <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-8">
+        <Button class="w-full text-sm sm:w-auto">Iniciar Consulta</Button>
+        <Button variant="outline" class="w-full sm:w-auto">Ver Investigación</Button>
+      </div>
+    </section>
+  </div>
+</section>

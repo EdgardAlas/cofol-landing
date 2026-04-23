@@ -1,0 +1,12 @@
+---
+interface Props {
+  title: string;
+  number: string;
+}
+
+const { title, number } = Astro.props as Props;
+---
+
+<p class="text-primary-700 font-mono text-[8px] font-bold tracking-[3px] uppercase sm:text-[10px]">
+  {number} / {title}
+</p>
