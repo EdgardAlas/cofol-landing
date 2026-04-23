@@ -56,23 +56,28 @@ const navLinks = [
     style="grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease;"
   >
     <div class="overflow-hidden">
-      <ul class="flex flex-col border-t border-neutral-200 px-4 py-2 sm:px-6">
-        {
-          navLinks.map((link) => (
-            <li class="mobile-link">
-              <a
-                href={link.href}
-                class="mobile-nav-link font-heading data-active:border-primary-600 data-active:text-primary-600 block border-l-2 border-transparent py-3 pl-3 text-sm font-semibold text-neutral-500 transition-colors hover:text-neutral-950"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <div class="mobile-link border-t border-neutral-200 px-4 py-4 sm:px-6">
-        <Button href="#contact" class="inline-block w-full text-center" size="sm">Begin Flow</Button
-        >
+      <div class="border-t border-neutral-200">
+        <ul class="container mx-auto flex flex-col px-4 py-2 sm:px-6">
+          {
+            navLinks.map((link) => (
+              <li class="mobile-link">
+                <a
+                  href={link.href}
+                  class="mobile-nav-link font-heading data-active:border-primary-600 data-active:text-primary-600 block border-l-2 border-transparent py-3 pl-3 text-sm font-semibold text-neutral-500 transition-colors hover:text-neutral-950"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="border-t border-neutral-200">
+          <div class="mobile-link container mx-auto px-4 py-4 sm:px-6">
+            <Button href="#contact" class="inline-block w-full text-center" size="sm"
+              >Begin Flow</Button
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
