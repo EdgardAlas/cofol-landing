@@ -6,19 +6,25 @@ type ButtonProps = HTMLAttributes<'button'>;
 
 type Props = ButtonProps & {
   variant?: 'primary' | 'outline';
+  size?: 'sm' | 'md';
   href?: string;
 };
 
-const { variant = 'primary', class: className, href, ...rest } = Astro.props;
+const { variant = 'primary', size = 'md', class: className, href, ...rest } = Astro.props;
 
 const variants = {
   primary:
-    'bg-primary-700 hover:bg-primary-800 border-primary-700 rounded-md border-2 px-6 py-3 text-white transition-colors sm:text-base lg:text-base xl:text-[18px]',
+    'bg-primary-700 hover:bg-primary-800 border-primary-700 rounded-md border-2 text-white transition-colors',
   outline:
-    'hover:border-primary-700/50 text-primary-700 hover:text-primary-800 border-primary-700/20 rounded-md border-2 px-6 py-3 transition-colors sm:text-base lg:text-base xl:text-[18px]',
+    'hover:border-primary-700/50 text-primary-700 hover:text-primary-800 border-primary-700/20 rounded-md border-2 transition-colors',
 };
 
-const classes = cn(variants[variant], className);
+const sizes = {
+  md: 'px-6 py-3 text-base',
+  sm: 'px-4 py-2 text-sm',
+};
+
+const classes = cn(variants[variant], sizes[size], className);
 ---
 
 {

@@ -1,0 +1,89 @@
+---
+import Button from './ui/Button.astro';
+import IconMenu from './icons/IconMenu.astro';
+import IconClose from './icons/IconClose.astro';
+
+const navLinks = [
+  { label: 'Genesis', href: '#genesis' },
+  { label: 'Ecosystem', href: '#ecosystem' },
+  { label: 'Philosophy', href: '#philosophy' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 bg-neutral-100/80 backdrop-blur-md transition-shadow duration-300"
+>
+  <nav class="container mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <a href="/" class="font-heading text-xl font-extrabold tracking-tight text-neutral-950">
+      COFOL
+    </a>
+
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="nav-link font-heading data-active:border-primary-600 data-active:text-primary-600 border-b-2 border-transparent text-sm font-semibold text-neutral-500 transition-colors hover:text-neutral-950"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="hidden md:block">
+      <Button href="#contact" size="sm">Begin Flow</Button>
+    </div>
+
+    <button
+      id="menu-toggle"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      class="flex size-10 items-center justify-center rounded-lg text-neutral-950 transition-colors hover:bg-neutral-200 md:hidden"
+    >
+      <IconMenu id="icon-menu" />
+      <IconClose id="icon-close" class="hidden" />
+    </button>
+  </nav>
+
+  <div
+    id="mobile-menu"
+    class="mx-auto grid md:hidden"
+    style="grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease;"
+  >
+    <div class="overflow-hidden">
+      <ul class="flex flex-col border-t border-neutral-200 px-4 py-2 sm:px-6">
+        {
+          navLinks.map((link) => (
+            <li class="mobile-link">
+              <a
+                href={link.href}
+                class="mobile-nav-link font-heading data-active:border-primary-600 data-active:text-primary-600 block border-l-2 border-transparent py-3 pl-3 text-sm font-semibold text-neutral-500 transition-colors hover:text-neutral-950"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mobile-link border-t border-neutral-200 px-4 py-4 sm:px-6">
+        <Button href="#contact" class="inline-block w-full text-center" size="sm">Begin Flow</Button
+        >
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { initMobileMenu } from '../lib/navbar/mobile-menu';
+  import { initScrollShadow } from '../lib/navbar/scroll-shadow';
+  import { initActiveLinks } from '../lib/navbar/active-links';
+
+  initMobileMenu();
+  initScrollShadow();
+  initActiveLinks();
+</script>
