@@ -3,10 +3,10 @@ import IconMenu from './icons/IconMenu.astro';
 import IconClose from './icons/IconClose.astro';
 
 const navLinks = [
-  { label: 'Genesis', href: '#genesis' },
-  { label: 'Ecosystem', href: '#ecosystem' },
-  { label: 'Philosophy', href: '#philosophy' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Genesis', href: '/#genesis' },
+  { label: 'Ecosystem', href: '/#ecosystem' },
+  { label: 'Philosophy', href: '/#philosophy' },
+  { label: 'Contact', href: '/#contact' },
 ];
 ---
 
@@ -14,7 +14,9 @@ const navLinks = [
   id="site-header"
   class="sticky top-0 z-50 bg-neutral-100/80 backdrop-blur-md transition-shadow duration-300"
 >
-  <nav class="container mx-auto grid grid-cols-2 items-center px-4 py-4 sm:px-6 md:grid-cols-3 lg:px-8">
+  <nav
+    class="container mx-auto grid grid-cols-2 items-center px-4 py-4 sm:px-6 md:grid-cols-3 lg:px-8"
+  >
     <div class="flex justify-start">
       <a href="/" class="font-heading text-xl font-extrabold tracking-tight text-neutral-950">
         COFOL
