@@ -1,12 +1,7 @@
 ---
 import SectionLabel from '../SectionLabel.astro';
 import ServiceCard from '../ui/ServiceCard.astro';
-import fullstackIcon from '../../assets/fullstack.svg';
-import automationIcon from '../../assets/automation.svg';
-import apiIcon from '../../assets/api.svg';
-import dataIcon from '../../assets/data.svg';
-import integrationIcon from '../../assets/integration.svg';
-import maintenanceIcon from '../../assets/maintenance.svg';
+import { Blocks, Bot, Database, Waypoints, Wrench, Workflow } from '@lucide/astro';
 ---
 
 <section class="bg-neutral-100" id="ecosystem">
@@ -32,8 +27,7 @@ import maintenanceIcon from '../../assets/maintenance.svg';
             variant="large"
             title="Full Stack"
             description="Desarrollo integral de interfaces simbióticas y arquitecturas resilientes."
-            icon={fullstackIcon}
-            iconAlt="Desarrollo Full Stack"
+            icon={Blocks}
             class="flex-1"
           />
           <div class="grid gap-4 sm:grid-cols-2">
@@ -41,15 +35,13 @@ import maintenanceIcon from '../../assets/maintenance.svg';
               variant="small"
               title="Backend APIs"
               description="Sistemas nerviosos centrales robustos y escalables."
-              icon={apiIcon}
-              iconAlt="Backend APIs"
+              icon={Waypoints}
             />
             <ServiceCard
               variant="small"
               title="Data Engineering"
               description="Tratamiento de flujos de datos como recursos naturales críticos."
-              icon={dataIcon}
-              iconAlt="Data Engineering"
+              icon={Database}
             />
           </div>
         </div>
@@ -59,22 +51,11 @@ import maintenanceIcon from '../../assets/maintenance.svg';
             variant="featured"
             title="AI / Automation"
             description="Inteligencia artificial integrada para optimizar el flujo de trabajo biológico-digital."
-            icon={automationIcon}
-            iconAlt="AI / Automation"
+            icon={Bot}
             class="flex-1"
           />
-          <ServiceCard
-            variant="compact"
-            title="System Integration"
-            icon={integrationIcon}
-            iconAlt="System Integration"
-          />
-          <ServiceCard
-            variant="compact"
-            title="Maintenance"
-            icon={maintenanceIcon}
-            iconAlt="Maintenance"
-          />
+          <ServiceCard variant="compact" title="System Integration" icon={Workflow} />
+          <ServiceCard variant="compact" title="Maintenance" icon={Wrench} />
         </div>
       </div>
     </div>

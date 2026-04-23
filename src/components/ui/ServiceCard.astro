@@ -1,19 +1,24 @@
 ---
 import { cn } from '../../lib/cn';
-import type { ImageMetadata } from 'astro';
 
 type Variant = 'large' | 'featured' | 'small' | 'compact';
+type IconComponent = (props: {
+  class?: string;
+  focusable?: string | number | null;
+  'aria-hidden'?: boolean;
+  'aria-label'?: string;
+  'stroke-width'?: string | number;
+}) => unknown;
 
 interface Props {
   variant?: Variant;
   title: string;
   description?: string;
-  icon?: ImageMetadata | string;
-  iconAlt?: string;
+  icon?: IconComponent;
   class?: string;
 }
 
-const { variant = 'small', title, description, icon, iconAlt, class: className } = Astro.props;
+const { variant = 'small', title, description, icon: Icon, class: className } = Astro.props;
 
 const wrapperVariants: Record<Variant, string> = {
   large: 'flex flex-col gap-4 rounded-2xl bg-neutral-50 p-6 sm:gap-6 sm:p-8',
@@ -23,10 +28,21 @@ const wrapperVariants: Record<Variant, string> = {
 };
 
 const iconVariants: Record<Variant, string> = {
-  large: 'size-8 bg-neutral-200 sm:size-10',
-  featured: 'size-8 bg-primary-700 sm:size-10',
-  small: 'size-8 bg-neutral-300 sm:size-10',
-  compact: 'size-8 bg-neutral-200 sm:size-10',
+  large:
+    'size-8 rounded-lg bg-neutral-200 text-neutral-700 ring-1 ring-neutral-300 shadow-xs sm:size-10',
+  featured:
+    'size-8 rounded-lg bg-primary-700/90 text-primary-100 ring-1 ring-primary-600/60 shadow-xs sm:size-10',
+  small:
+    'size-8 rounded-lg bg-neutral-300 text-neutral-800 ring-1 ring-neutral-400/60 shadow-xs sm:size-10',
+  compact:
+    'size-10 rounded-lg bg-tertiary-100 text-tertiary-700 ring-1 ring-tertiary-200 shadow-xs sm:size-11',
+};
+
+const iconSizeVariants: Record<Variant, string> = {
+  large: 'size-6 sm:size-7',
+  featured: 'size-6 sm:size-7',
+  small: 'size-6 sm:size-7',
+  compact: 'size-7 sm:size-8',
 };
 
 const titleVariants: Record<Variant, string> = {
@@ -40,22 +56,15 @@ const descriptionVariants: Record<Variant, string> = {
   large: 'text-neutral-600',
   featured: 'text-primary-200',
   small: 'text-neutral-600',
-  compact: '',
+  compact: 'text-neutral-600',
 };
 ---
 
 <div class={cn(wrapperVariants[variant], className)}>
   {
-    icon && (
-      <div class={cn('rounded-lg', icon ?? iconVariants[variant])}>
-        <img
-          src={typeof icon === 'string' ? icon : icon.src}
-          alt={iconAlt ?? `${title} icon`}
-          class={cn('object-contain', {
-            'size-7': variant !== 'compact',
-            'size-12': variant === 'compact',
-          })}
-        />
+    Icon && (
+      <div class={cn('flex items-center justify-center', iconVariants[variant])}>
+        <Icon aria-hidden={true} class={cn('object-contain', iconSizeVariants[variant])} />
       </div>
     )
   }

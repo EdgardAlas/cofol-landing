@@ -1,52 +1,91 @@
 export function initActiveLinks() {
-  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
-  const mobileNavLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link');
-  const sectionIds = Array.from(navLinks).map((l) => l.getAttribute('href')!.slice(1));
+  const TOP_THRESHOLD = 100;
+  const BOTTOM_THRESHOLD = 50;
+  const CURRENT_SECTION_BONUS = 10;
+
+  const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
+  const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link');
+  const allLinks = [...Array.from(desktopLinks), ...Array.from(mobileLinks)];
+
+  const sectionIds = Array.from(desktopLinks).map((link) => link.getAttribute('href')!.slice(1));
+
   const sections = sectionIds
     .map((id) => document.getElementById(id))
-    .filter(Boolean) as HTMLElement[];
+    .filter((el): el is HTMLElement => el !== null);
 
-  const visibleSections = new Set<string>();
+  let isUpdatePending = false;
+  let activeId: string | null = null;
 
-  const setActiveLink = () => {
-    let closest: string | null = null;
-    let closestDist = Infinity;
+  const updateActive = () => {
+    let activeCandidate: string | null = null;
+    let maxVisibleHeight = 0;
 
-    visibleSections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
+    const navbar = document.getElementById('site-header');
+    const navbarHeight = navbar ? navbar.offsetHeight : 0;
 
-      const dist = Math.abs(el.getBoundingClientRect().top);
-      if (dist < closestDist) {
-        closestDist = dist;
-        closest = id;
+    const viewportTop = navbarHeight;
+    const viewportBottom = window.innerHeight;
+
+    sections.forEach((section) => {
+      const box = section.getBoundingClientRect();
+
+      const visibleTop = Math.max(box.top, viewportTop);
+      const visibleBottom = Math.min(box.bottom, viewportBottom);
+      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+      const isActive = section.id === activeId;
+      const bonus = isActive ? CURRENT_SECTION_BONUS : 0;
+
+      if (visibleHeight + bonus > maxVisibleHeight) {
+        maxVisibleHeight = visibleHeight;
+        activeCandidate = section.id;
       }
     });
 
-    [...navLinks, ...mobileNavLinks].forEach((link) => {
-      const id = link.getAttribute('href')!.slice(1);
+    const isNearTop = window.scrollY < TOP_THRESHOLD;
+    if (isNearTop && sections.length > 0) {
+      activeCandidate = sections[0].id;
+    }
 
-      if (id === closest) {
-        link.dataset.active = '';
-      } else {
-        delete link.dataset.active;
-      }
-    });
-  };
+    const isNearBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - BOTTOM_THRESHOLD;
+    if (isNearBottom && sections.length > 0) {
+      activeCandidate = sections[sections.length - 1].id;
+    }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          visibleSections.add(entry.target.id);
+    if (activeCandidate !== activeId) {
+      activeId = activeCandidate;
+
+      allLinks.forEach((link) => {
+        const targetId = link.getAttribute('href')!.slice(1);
+        if (targetId === activeId) {
+          link.dataset.active = '';
         } else {
-          visibleSections.delete(entry.target.id);
+          delete link.dataset.active;
         }
       });
-      setActiveLink();
-    },
-    { threshold: 0.2 }
-  );
+    }
+  };
+
+  const handleViewportChange = () => {
+    if (!isUpdatePending) {
+      requestAnimationFrame(() => {
+        updateActive();
+        isUpdatePending = false;
+      });
+      isUpdatePending = true;
+    }
+  };
+
+  addEventListener('scroll', handleViewportChange, { passive: true });
+  addEventListener('resize', handleViewportChange, { passive: true });
+
+  updateActive();
+
+  const observer = new IntersectionObserver(() => updateActive(), {
+    threshold: [0, 0.5, 1],
+  });
 
   sections.forEach((section) => observer.observe(section));
 }
