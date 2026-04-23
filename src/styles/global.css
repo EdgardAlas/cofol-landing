@@ -1,1 +1,62 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/manrope';
+
+@theme inline {
+  --font-sans: 'Inter Variable', sans-serif;
+  --font-heading: 'Manrope Variable', sans-serif;
+
+  --color-primary-50: var(--color-white);
+  --color-primary-100: #e4f6dd;
+  --color-primary-200: #d6e8cf;
+  --color-primary-300: #baccb4;
+  --color-primary-400: #9fb09a;
+  --color-primary-500: #849580;
+  --color-primary-600: #6b7c67;
+  --color-primary-700: #536350;
+  --color-primary-800: #3b4b39;
+  --color-primary-900: #253424;
+  --color-primary-950: #111f10;
+
+  --color-secondary-50: var(--color-white);
+  --color-secondary-100: #d3fadf;
+  --color-secondary-200: #c5ecd1;
+  --color-secondary-300: #a9d0b6;
+  --color-secondary-400: #8eb49b;
+  --color-secondary-500: #749982;
+  --color-secondary-600: #5b7f69;
+  --color-secondary-700: #436651;
+  --color-secondary-800: #2b4e3a;
+  --color-secondary-900: #143725;
+  --color-secondary-950: #002111;
+
+  --color-tertiary-50: var(--color-white);
+  --color-tertiary-100: #ffeed9;
+  --color-tertiary-200: #f4e0c5;
+  --color-tertiary-300: #d7c4aa;
+  --color-tertiary-400: #baa990;
+  --color-tertiary-500: #9f8e77;
+  --color-tertiary-600: #84755e;
+  --color-tertiary-700: #6a5c47;
+  --color-tertiary-800: #524531;
+  --color-tertiary-900: #3a2f1c;
+  --color-tertiary-950: #241a09;
+
+  --color-neutral-50: var(--color-white);
+  --color-neutral-100: #f3f0eb;
+  --color-neutral-200: #e5e2dd;
+  --color-neutral-300: #c9c6c1;
+  --color-neutral-400: #adaba6;
+  --color-neutral-500: #92918c;
+  --color-neutral-600: #787773;
+  --color-neutral-700: #5f5e5a;
+  --color-neutral-800: #474743;
+  --color-neutral-900: #31302d;
+  --color-neutral-950: #1c1c19;
+}
+
+@layer base {
+  body {
+    @apply font-sans;
+  }
+}
