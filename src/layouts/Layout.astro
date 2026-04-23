@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -18,8 +19,11 @@ const { title, description } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>
-  <body>
+  <body class="flex min-h-screen flex-col">
     <Navbar />
-    <slot />
+    <main class="grow">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
