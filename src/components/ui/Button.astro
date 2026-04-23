@@ -5,7 +5,7 @@ import { cn } from '../../lib/cn';
 type ButtonProps = HTMLAttributes<'button'>;
 
 type Props = ButtonProps & {
-  variant?: 'primary' | 'outline';
+  variant?: 'primary' | 'outline' | 'secondary';
   size?: 'sm' | 'md';
   href?: string;
 };
@@ -17,6 +17,8 @@ const variants = {
     'bg-primary-700 hover:bg-primary-800 border-primary-700 rounded-md border-2 text-white transition-colors',
   outline:
     'hover:border-primary-700/50 text-primary-700 hover:text-primary-800 border-primary-700/20 rounded-md border-2 transition-colors',
+  secondary:
+    'bg-neutral-100 hover:bg-neutral-200 border-neutral-100 rounded-md border-2 text-neutral-900 transition-colors',
 };
 
 const sizes = {
