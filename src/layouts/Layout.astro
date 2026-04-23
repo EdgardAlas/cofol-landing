@@ -8,24 +8,35 @@ interface Props {
   description?: string;
   ogImage?: string;
   ogType?: 'website' | 'article';
+  noindex?: boolean;
+  lang?: string;
 }
 
-const { title, description, ogImage = 'og-image.png', ogType = 'website' } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = 'og-image.png',
+  ogType = 'website',
+  noindex = false,
+  lang = 'es',
+} = Astro.props;
 
 const siteUrl = Astro.site;
 const canonicalURL = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : undefined;
 const ogImageURL = ogImage && siteUrl ? new URL(ogImage, siteUrl).toString() : undefined;
 const siteName = 'COFOL';
+const robotsContent = noindex ? 'noindex, nofollow' : 'index, follow';
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <meta name="robots" content={robotsContent} />
 
     {canonicalURL && <link rel="canonical" href={canonicalURL} />}
 
