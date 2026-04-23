@@ -60,7 +60,7 @@ const descriptionVariants: Record<Variant, string> = {
 };
 ---
 
-<div class={cn(wrapperVariants[variant], className)}>
+<div class={cn('hover:shadow transition-shadow duration-200', wrapperVariants[variant], className)}>
   {
     Icon && (
       <div class={cn('flex items-center justify-center', iconVariants[variant])}>

@@ -1,0 +1,69 @@
+---
+import SectionLabel from '../SectionLabel.astro';
+import philosophyImage from '../../assets/philosophy.png';
+---
+
+<section id="philosophy">
+  <div class="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <div class="space-y-7 lg:space-y-8">
+        <div class="space-y-4 lg:space-y-5">
+          <SectionLabel number="03" title="PHILOSOPHY" />
+
+          <h2
+            class="font-heading text-3xl leading-tight font-bold tracking-[-1.2px] sm:text-4xl sm:tracking-[-1.5px] lg:text-6xl lg:leading-15"
+          >
+            Biotopo Digital
+          </h2>
+        </div>
+
+        <p
+          class="text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7 lg:text-[18px] lg:leading-8"
+        >
+          Nuestra metodologia core se basa en la creacion de entornos digitales que se comportan
+          como organismos vivos. No construimos interfaces estaticas; disenamos flujos dinamicos que
+          se adaptan a la carga cognitiva del usuario.
+        </p>
+
+        <p
+          class="text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7 lg:text-[18px] lg:leading-8"
+        >
+          En COFOL, creemos que la tecnologia debe ser invisible, permitiendo que la creatividad
+          humana florezca en un entorno de minima friccion y maxima resonancia tecnica.
+        </p>
+
+        <ul
+          class="space-y-2.5 pt-2 text-sm leading-6 font-semibold text-neutral-950 sm:space-y-3 sm:pt-3 sm:text-base sm:leading-7 lg:text-[18px] lg:leading-8"
+        >
+          <li class="flex items-center gap-2.5 sm:gap-3">
+            <span class="bg-primary-600 size-2 shrink-0 rounded-full sm:size-2.5"></span>
+            Arquitectura Evolutiva
+          </li>
+          <li class="flex items-center gap-2.5 sm:gap-3">
+            <span class="bg-primary-600 size-2 shrink-0 rounded-full sm:size-2.5"></span>
+            Resonancia Cognitiva
+          </li>
+          <li class="flex items-center gap-2.5 sm:gap-3">
+            <span class="bg-primary-600 size-2 shrink-0 rounded-full sm:size-2.5"></span>
+            Simbiosis Algoritmica
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative mx-auto w-full pb-16 sm:pb-22 lg:order-first lg:mx-0 lg:pb-0">
+        <img
+          src={philosophyImage.src}
+          class="aspect-square w-full max-w-130 rounded-4xl object-cover"
+          alt="Representacion visual del biotopo digital"
+          loading="lazy"
+        />
+
+        <blockquote
+          class="text-primary-700 absolute right-3 -bottom-2 w-[82%] rounded-2xl bg-neutral-100 p-4 text-sm leading-6 font-semibold shadow-[0_22px_40px_-28px_rgba(28,28,25,0.55)] sm:right-6 sm:-bottom-4 sm:w-[64%] sm:rounded-3xl sm:p-6 sm:text-base sm:leading-7 lg:-right-7 lg:-bottom-9 lg:w-[68%] lg:p-7 lg:text-[18px] lg:leading-8"
+        >
+          "El software no debe ser una herramienta, sino un habitat que respira con el usuario."
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
