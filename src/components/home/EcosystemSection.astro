@@ -1,0 +1,82 @@
+---
+import SectionLabel from '../SectionLabel.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+import fullstackIcon from '../../assets/fullstack.svg';
+import automationIcon from '../../assets/automation.svg';
+import apiIcon from '../../assets/api.svg';
+import dataIcon from '../../assets/data.svg';
+import integrationIcon from '../../assets/integration.svg';
+import maintenanceIcon from '../../assets/maintenance.svg';
+---
+
+<section class="bg-neutral-100" id="ecosystem-services">
+  <div class="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+    <div class="space-y-10 sm:space-y-12">
+      <div class="space-y-4">
+        <SectionLabel number="02" title="ECOSYSTEM SERVICES" />
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end">
+          <h2
+            class="font-heading flex-1 text-4xl leading-none font-bold tracking-[-1.5px] sm:text-5xl lg:text-6xl lg:leading-15"
+          >
+            Servicios de Adaptación Cognitiva
+          </h2>
+          <p class="text-base leading-7 text-neutral-700 lg:max-w-xs lg:text-right">
+            Arquitecturas diseñadas para evolucionar con la complejidad de su organización.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid gap-4 lg:grid-cols-3">
+        <div class="flex flex-col gap-4 lg:col-span-2">
+          <ServiceCard
+            variant="large"
+            title="Full Stack"
+            description="Desarrollo integral de interfaces simbióticas y arquitecturas resilientes."
+            icon={fullstackIcon}
+            iconAlt="Desarrollo Full Stack"
+            class="flex-1"
+          />
+          <div class="grid gap-4 sm:grid-cols-2">
+            <ServiceCard
+              variant="small"
+              title="Backend APIs"
+              description="Sistemas nerviosos centrales robustos y escalables."
+              icon={apiIcon}
+              iconAlt="Backend APIs"
+            />
+            <ServiceCard
+              variant="small"
+              title="Data Engineering"
+              description="Tratamiento de flujos de datos como recursos naturales críticos."
+              icon={dataIcon}
+              iconAlt="Data Engineering"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <ServiceCard
+            variant="featured"
+            title="AI / Automation"
+            description="Inteligencia artificial integrada para optimizar el flujo de trabajo biológico-digital."
+            icon={automationIcon}
+            iconAlt="AI / Automation"
+            class="flex-1"
+          />
+          <ServiceCard
+            variant="compact"
+            title="System Integration"
+            icon={integrationIcon}
+            iconAlt="System Integration"
+          />
+          <ServiceCard
+            variant="compact"
+            title="Maintenance"
+            icon={maintenanceIcon}
+            iconAlt="Maintenance"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

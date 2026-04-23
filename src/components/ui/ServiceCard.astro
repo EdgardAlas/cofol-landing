@@ -1,0 +1,74 @@
+---
+import { cn } from '../../lib/cn';
+import type { ImageMetadata } from 'astro';
+
+type Variant = 'large' | 'featured' | 'small' | 'compact';
+
+interface Props {
+  variant?: Variant;
+  title: string;
+  description?: string;
+  icon?: ImageMetadata | string;
+  iconAlt?: string;
+  class?: string;
+}
+
+const { variant = 'small', title, description, icon, iconAlt, class: className } = Astro.props;
+
+const wrapperVariants: Record<Variant, string> = {
+  large: 'flex flex-col gap-4 rounded-2xl bg-neutral-50 p-6 sm:gap-6 sm:p-8',
+  featured: 'flex flex-col gap-4 rounded-2xl bg-primary-800 p-6 sm:gap-6 sm:p-8',
+  small: 'flex flex-col gap-4 rounded-2xl bg-neutral-200 p-6 sm:gap-6 sm:p-8',
+  compact: 'flex items-center gap-3 rounded-2xl bg-neutral-50 px-5 py-4 sm:gap-4 sm:px-6 sm:py-5',
+};
+
+const iconVariants: Record<Variant, string> = {
+  large: 'size-8 bg-neutral-200 sm:size-10',
+  featured: 'size-8 bg-primary-700 sm:size-10',
+  small: 'size-8 bg-neutral-300 sm:size-10',
+  compact: 'size-8 bg-neutral-200 sm:size-10',
+};
+
+const titleVariants: Record<Variant, string> = {
+  large: 'text-xl text-neutral-950 sm:text-2xl',
+  featured: 'text-xl text-primary-50 sm:text-2xl',
+  small: 'text-lg text-neutral-950 sm:text-xl',
+  compact: 'text-base text-neutral-950 sm:text-lg',
+};
+
+const descriptionVariants: Record<Variant, string> = {
+  large: 'text-neutral-600',
+  featured: 'text-primary-200',
+  small: 'text-neutral-600',
+  compact: '',
+};
+---
+
+<div class={cn(wrapperVariants[variant], className)}>
+  {
+    icon && (
+      <div class={cn('rounded-lg', icon ?? iconVariants[variant])}>
+        <img
+          src={typeof icon === 'string' ? icon : icon.src}
+          alt={iconAlt ?? `${title} icon`}
+          class={cn('object-contain', {
+            'size-7': variant !== 'compact',
+            'size-12': variant === 'compact',
+          })}
+        />
+      </div>
+    )
+  }
+  {
+    variant === 'compact' ? (
+      <h3 class={cn('font-heading font-bold', titleVariants[variant])}>{title}</h3>
+    ) : (
+      <div class="flex flex-col gap-2">
+        <h3 class={cn('font-heading font-bold', titleVariants[variant])}>{title}</h3>
+        {description && (
+          <p class={cn('text-sm leading-6', descriptionVariants[variant])}>{description}</p>
+        )}
+      </div>
+    )
+  }
+</div>
