@@ -12,7 +12,7 @@ const localePrefix = Object.keys(languages).find(
 const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/' : pathname;
 ---
 
-<div class="relative" id="lang-switcher">
+<div class="relative z-10" id="lang-switcher">
   <button
     id="lang-btn"
     aria-haspopup="menu"

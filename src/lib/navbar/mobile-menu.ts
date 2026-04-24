@@ -12,6 +12,7 @@ export function initMobileMenu() {
   const updateMenuState = (open: boolean) => {
     isOpen = open;
     menu.style.gridTemplateRows = isOpen ? '1fr' : '0fr';
+    menu.classList.toggle('shadow-md', isOpen);
     iconMenu.classList.toggle('hidden', isOpen);
     iconClose.classList.toggle('hidden', !isOpen);
     toggle.setAttribute('aria-expanded', String(isOpen));
