@@ -1,0 +1,148 @@
+---
+import { SendHorizontal } from '@lucide/astro';
+import Button from '../ui/Button.astro';
+
+export const prerender = true;
+---
+
+<div
+  id="success-message"
+  class="hidden w-full flex-col items-center justify-center gap-4 rounded-3xl border border-green-200 bg-green-50 p-10 text-center"
+>
+  <h3 class="text-lg font-bold text-neutral-900 sm:text-xl">¡Mensaje enviado!</h3>
+  <p class="text-sm leading-6 text-neutral-600 sm:text-base">
+    Gracias por contactarnos. Nos pondremos en contacto contigo pronto.
+  </p>
+  <button
+    id="reset-btn"
+    class="mt-2 text-sm font-semibold text-green-700 underline underline-offset-4 hover:text-green-800"
+  >
+    Enviar otro mensaje
+  </button>
+</div>
+
+<div
+  id="form-container"
+  class="w-full rounded-3xl border border-neutral-200 bg-white p-6 shadow sm:p-8 lg:p-10"
+>
+  <form id="contact-form" class="space-y-4">
+    <div class="space-y-1">
+      <label for="name" class="block text-sm font-semibold text-neutral-800 sm:text-base">
+        Nombre Completo
+      </label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        placeholder="John Doe"
+        class="focus:border-primary-600 focus:ring-primary-600/20 w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
+      />
+      <p id="error-name" class="text-xs text-red-600 empty:hidden"></p>
+    </div>
+
+    <div class="space-y-1">
+      <label for="email" class="block text-sm font-semibold text-neutral-800 sm:text-base">
+        Email
+      </label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="john@company.com"
+        class="focus:border-primary-600 focus:ring-primary-600/20 w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
+      />
+      <p id="error-email" class="text-xs text-red-600 empty:hidden"></p>
+    </div>
+
+    <div class="space-y-1">
+      <label for="message" class="block text-sm font-semibold text-neutral-800 sm:text-base">
+        Mensaje
+      </label>
+      <textarea
+        id="message"
+        name="message"
+        rows="5"
+        placeholder="¿Cómo podemos optimizar tu flujo de trabajo?"
+        class="focus:border-primary-600 focus:ring-primary-600/20 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
+      ></textarea>
+      <p id="error-message" class="text-xs text-red-600 empty:hidden"></p>
+    </div>
+
+    <p
+      id="error-server"
+      class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 empty:hidden"
+    >
+    </p>
+
+    <Button id="submit-btn" type="submit" class={'w-full'}>
+      Enviar Consulta
+      <SendHorizontal size={17} stroke-width={2} />
+    </Button>
+  </form>
+</div>
+
+<script>
+  import { actions, isInputError } from 'astro:actions';
+
+  const contactForm = document.getElementById('contact-form') as HTMLFormElement;
+  const formContainer = document.getElementById('form-container');
+  const successMessage = document.getElementById('success-message');
+  const submitButton = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  const serverError = document.getElementById('error-server') as HTMLParagraphElement | null;
+  const resetBtn = document.getElementById('reset-btn');
+
+  const errorElements: Record<string, HTMLElement | null> = {
+    name: document.getElementById('error-name'),
+    email: document.getElementById('error-email'),
+    message: document.getElementById('error-message'),
+  };
+
+  resetBtn?.addEventListener('click', () => {
+    contactForm.reset();
+    if (serverError) serverError.textContent = '';
+    successMessage?.classList.add('hidden');
+    successMessage?.classList.remove('flex');
+    formContainer?.classList.remove('hidden');
+  });
+
+  contactForm?.addEventListener('input', (event) => {
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
+    const fieldName = target.name;
+    if (fieldName in errorElements) {
+      errorElements[fieldName]!.textContent = '';
+    }
+    if (serverError) serverError.textContent = '';
+  });
+
+  contactForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    submitButton.disabled = true;
+
+    const formData = new FormData(contactForm);
+    const { data, error } = await actions.contact(formData);
+
+    if (data?.success) {
+      formContainer?.classList.add('hidden');
+      successMessage?.classList.remove('hidden');
+      successMessage?.classList.add('flex');
+      contactForm.reset();
+      submitButton.disabled = false;
+      return;
+    }
+
+    if (isInputError(error)) {
+      Object.keys(errorElements).forEach((key) => {
+        const message = error.fields[key as keyof typeof error.fields];
+        const element = errorElements[key];
+        if (element) {
+          element.textContent = message ? message[0] : '';
+        }
+      });
+    } else if (error && serverError) {
+      serverError.textContent = error.message;
+    }
+
+    submitButton.disabled = false;
+  });
+</script>

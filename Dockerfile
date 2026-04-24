@@ -10,10 +10,11 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
 
+FROM node:alpine AS production
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
 
-FROM nginx:alpine AS runtime
-
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 8080
+ENV HOST=0.0.0.0
+ENV PORT=4321
+EXPOSE 4321
+CMD ["node", "./dist/server/entry.mjs"]

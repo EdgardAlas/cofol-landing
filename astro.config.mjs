@@ -4,6 +4,9 @@ import { loadEnv } from 'vite';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+
+import node from '@astrojs/node';
+
 const env = loadEnv(process.env.NODE_ENV ?? '', process.cwd(), '');
 
 // https://astro.build/config
@@ -14,5 +17,10 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
+  output: 'server',
   integrations: [sitemap()],
+
+  adapter: node({
+    mode: 'standalone',
+  }),
 });

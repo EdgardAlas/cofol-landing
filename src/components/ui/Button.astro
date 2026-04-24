@@ -26,7 +26,12 @@ const sizes = {
   sm: 'px-4 py-2 text-sm',
 };
 
-const classes = cn(variants[variant], sizes[size], className);
+const classes = cn(
+  'flex gap-2 items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
+  variants[variant],
+  sizes[size],
+  className
+);
 ---
 
 {
