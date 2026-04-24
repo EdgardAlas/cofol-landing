@@ -9,7 +9,6 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
-  lang?: string;
 }
 
 const {
@@ -18,8 +17,9 @@ const {
   ogImage = 'og-image.png',
   ogType = 'website',
   noindex = false,
-  lang = 'es',
 } = Astro.props;
+
+const lang = Astro.currentLocale ?? 'es';
 
 const siteUrl = Astro.site;
 const canonicalURL = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : undefined;

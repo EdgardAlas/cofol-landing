@@ -1,0 +1,28 @@
+---
+import ContactSection from '../../components/home/ContactSection.astro';
+import EcosystemSection from '../../components/home/EcosystemSection.astro';
+import HomeHero from '../../components/home/HomeHero.astro';
+import PhilosophySection from '../../components/home/PhilosophySection.astro';
+import Layout from '../../layouts/Layout.astro';
+import { languages, defaultLang } from '../../i18n/ui';
+import { common } from '../../i18n/translations/common';
+import type { Locale } from '../../i18n/utils';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== defaultLang)
+    .map((l) => ({ params: { lang: l } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = common[lang];
+---
+
+<Layout title={t.layout.title} description={t.layout.description}>
+  <HomeHero />
+  <EcosystemSection />
+  <PhilosophySection />
+  <ContactSection />
+</Layout>

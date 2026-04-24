@@ -1,23 +1,26 @@
 ---
 import { SendHorizontal } from '@lucide/astro';
 import Button from '../ui/Button.astro';
+import { getCurrentLocale } from '../../i18n/utils';
+import { home } from '../../i18n/translations/home';
 
-export const prerender = true;
+const lang = getCurrentLocale(Astro.currentLocale);
+const t = home[lang];
 ---
 
 <div
   id="success-message"
   class="hidden w-full flex-col items-center justify-center gap-4 rounded-3xl border border-green-200 bg-green-50 p-10 text-center"
 >
-  <h3 class="text-lg font-bold text-neutral-900 sm:text-xl">¡Mensaje enviado!</h3>
+  <h3 class="text-lg font-bold text-neutral-900 sm:text-xl">{t.form.success.title}</h3>
   <p class="text-sm leading-6 text-neutral-600 sm:text-base">
-    Gracias por contactarnos. Nos pondremos en contacto contigo pronto.
+    {t.form.success.body}
   </p>
   <button
     id="reset-btn"
     class="mt-2 text-sm font-semibold text-green-700 underline underline-offset-4 hover:text-green-800"
   >
-    Enviar otro mensaje
+    {t.form.success.reset}
   </button>
 </div>
 
@@ -25,16 +28,27 @@ export const prerender = true;
   id="form-container"
   class="w-full rounded-3xl border border-neutral-200 bg-white p-6 shadow sm:p-8 lg:p-10"
 >
-  <form id="contact-form" class="space-y-4">
+  <form
+    id="contact-form"
+    class="space-y-4"
+    data-err-name-required={t.form.name.required}
+    data-err-name-min={t.form.name.min}
+    data-err-name-max={t.form.name.max}
+    data-err-email-invalid={t.form.email.invalid}
+    data-err-message-required={t.form.message.required}
+    data-err-message-min={t.form.message.min}
+    data-err-message-max={t.form.message.max}
+  >
+    <input type="hidden" name="lang" value={lang} />
     <div class="space-y-1">
       <label for="name" class="block text-sm font-semibold text-neutral-800 sm:text-base">
-        Nombre Completo
+        {t.form.name.label}
       </label>
       <input
         id="name"
         name="name"
         type="text"
-        placeholder="John Doe"
+        placeholder={t.form.name.placeholder}
         class="focus:border-primary-600 focus:ring-primary-600/20 w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
       />
       <p id="error-name" class="text-xs text-red-600 empty:hidden"></p>
@@ -42,13 +56,13 @@ export const prerender = true;
 
     <div class="space-y-1">
       <label for="email" class="block text-sm font-semibold text-neutral-800 sm:text-base">
-        Email
+        {t.form.email.label}
       </label>
       <input
         id="email"
         name="email"
         type="email"
-        placeholder="john@company.com"
+        placeholder={t.form.email.placeholder}
         class="focus:border-primary-600 focus:ring-primary-600/20 w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
       />
       <p id="error-email" class="text-xs text-red-600 empty:hidden"></p>
@@ -56,13 +70,13 @@ export const prerender = true;
 
     <div class="space-y-1">
       <label for="message" class="block text-sm font-semibold text-neutral-800 sm:text-base">
-        Mensaje
+        {t.form.message.label}
       </label>
       <textarea
         id="message"
         name="message"
         rows="5"
-        placeholder="¿Cómo podemos optimizar tu flujo de trabajo?"
+        placeholder={t.form.message.placeholder}
         class="focus:border-primary-600 focus:ring-primary-600/20 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-2 focus:outline-none sm:text-base"
       ></textarea>
       <p id="error-message" class="text-xs text-red-600 empty:hidden"></p>
@@ -75,7 +89,7 @@ export const prerender = true;
     </p>
 
     <Button id="submit-btn" type="submit" class={'w-full'}>
-      Enviar Consulta
+      {t.form.submit}
       <SendHorizontal size={17} stroke-width={2} />
     </Button>
   </form>
@@ -132,11 +146,21 @@ export const prerender = true;
     }
 
     if (isInputError(error)) {
+      const d = contactForm.dataset;
+      const msgMap: Record<string, string> = {
+        'name:required': d.errNameRequired ?? '',
+        'name:min': d.errNameMin ?? '',
+        'name:max': d.errNameMax ?? '',
+        'email:invalid': d.errEmailInvalid ?? '',
+        'message:required': d.errMessageRequired ?? '',
+        'message:min': d.errMessageMin ?? '',
+        'message:max': d.errMessageMax ?? '',
+      };
       Object.keys(errorElements).forEach((key) => {
-        const message = error.fields[key as keyof typeof error.fields];
         const element = errorElements[key];
         if (element) {
-          element.textContent = message ? message[0] : '';
+          const serverMsg = error.fields[key as keyof typeof error.fields];
+          element.textContent = serverMsg ? (msgMap[serverMsg[0]] ?? serverMsg[0]) : '';
         }
       });
     } else if (error && serverError) {

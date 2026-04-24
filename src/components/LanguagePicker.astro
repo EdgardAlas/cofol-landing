@@ -1,0 +1,91 @@
+---
+import { languages } from '../i18n/ui';
+import { getCurrentLocale, getLocaleUrl, type Locale } from '../i18n/utils';
+import { ChevronDown, Check } from '@lucide/astro';
+
+const lang = getCurrentLocale(Astro.currentLocale);
+
+const { pathname } = Astro.url;
+const localePrefix = Object.keys(languages).find(
+  (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
+);
+const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/' : pathname;
+---
+
+<div class="relative" id="lang-switcher">
+  <button
+    id="lang-btn"
+    aria-haspopup="true"
+    aria-expanded="false"
+    class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-neutral-500 transition-colors hover:bg-neutral-200 hover:text-neutral-950"
+  >
+    <span class="font-mono uppercase">{lang}</span>
+    <ChevronDown
+      size={14}
+      stroke-width={2.5}
+      id="lang-chevron"
+      class="transition-transform duration-200"
+    />
+  </button>
+
+  <ul
+    id="lang-menu"
+    role="menu"
+    class="invisible absolute top-full right-0 mt-1 min-w-30 overflow-hidden rounded-xl border border-neutral-200 bg-white opacity-0 shadow-lg transition-all duration-200"
+  >
+    {
+      Object.entries(languages).map(([l, label]) => (
+        <li role="none">
+          <a
+            href={getLocaleUrl(l as Locale, currentPath)}
+            role="menuitem"
+            class:list={[
+              'flex items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-neutral-100',
+              l === lang ? 'text-primary-600' : 'text-neutral-600 hover:text-neutral-950',
+            ]}
+          >
+            {label}
+            {l === lang && <Check size={14} stroke-width={2.5} />}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  const btn = document.getElementById('lang-btn');
+  const menu = document.getElementById('lang-menu');
+  const chevron = document.getElementById('lang-chevron');
+
+  function openMenu() {
+    menu?.classList.remove('invisible', 'opacity-0');
+    menu?.classList.add('opacity-100');
+    btn?.setAttribute('aria-expanded', 'true');
+    chevron?.classList.add('rotate-180');
+  }
+
+  function closeMenu() {
+    menu?.classList.add('invisible', 'opacity-0');
+    menu?.classList.remove('opacity-100');
+    btn?.setAttribute('aria-expanded', 'false');
+    chevron?.classList.remove('rotate-180');
+  }
+
+  btn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+    if (isOpen) {
+      return closeMenu();
+    }
+
+    openMenu();
+  });
+
+  document.addEventListener('click', () => closeMenu());
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>

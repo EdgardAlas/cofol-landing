@@ -4,14 +4,15 @@ import EcosystemSection from '../components/home/EcosystemSection.astro';
 import HomeHero from '../components/home/HomeHero.astro';
 import PhilosophySection from '../components/home/PhilosophySection.astro';
 import Layout from '../layouts/Layout.astro';
+import { defaultLang } from '../i18n/ui';
+import { common } from '../i18n/translations/common';
 
 export const prerender = true;
+
+const t = common[defaultLang];
 ---
 
-<Layout
-  title="Ecosistemas digitales de alto rendimiento"
-  description="En COFOL diseñamos y construimos ecosistemas digitales, productos web y plataformas de software enfocadas en rendimiento, claridad y crecimiento sostenible."
->
+<Layout title={t.layout.title} description={t.layout.description}>
   <HomeHero />
   <EcosystemSection />
   <PhilosophySection />

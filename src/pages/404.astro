@@ -3,15 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 import Button from '../components/ui/Button.astro';
 import heroBackground from '../assets/home-hero-bg.png';
+import { getCurrentLocale, getLocaleUrl } from '../i18n/utils';
+import { common } from '../i18n/translations/common';
 
 export const prerender = true;
+
+const lang = getCurrentLocale(Astro.currentLocale);
+const t = common[lang].notFound;
 ---
 
-<Layout
-  title="404 — Página no encontrada"
-  description="Parece que el rincón digital que buscas aún no ha sido cultivado en el ecosistema de COFOL."
-  noindex
->
+<Layout title={t.title} description={t.description} noindex>
   <div
     style={`background-image: url(${heroBackground.src})`}
     class="bg-contain bg-top-right bg-no-repeat"
@@ -24,16 +25,16 @@ export const prerender = true;
         <h1
           class="font-heading mb-6 text-4xl font-semibold tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl"
         >
-          Extraviado en <br /> el <span class="text-primary-700 font-mono font-light italic"
-            >biótopo</span
-          >
+          {t.headingPre}
+          <br />
+          {t.headingMid}
+          <span class="text-primary-700 font-mono font-light italic">{t.highlight}</span>
         </h1>
         <p class="mb-10 text-lg leading-relaxed text-neutral-600 sm:text-xl">
-          Parece que el rincón digital que buscas aún no ha sido cultivado. Permítenos guiarte de
-          vuelta al origen del ecosistema.
+          {t.body}
         </p>
         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button href="/" variant="primary"> Ir al Inicio </Button>
+          <Button href={getLocaleUrl(lang)} variant="primary">{t.cta}</Button>
         </div>
       </div>
     </div>

@@ -2,6 +2,11 @@
 import SectionLabel from '../SectionLabel.astro';
 import { Mail, MapPin } from '@lucide/astro';
 import ContactForm from './ContactForm.astro';
+import { getCurrentLocale } from '../../i18n/utils';
+import { home } from '../../i18n/translations/home';
+
+const lang = getCurrentLocale(Astro.currentLocale);
+const t = home[lang];
 ---
 
 <section id="contact">
@@ -9,20 +14,19 @@ import ContactForm from './ContactForm.astro';
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
       <div class="space-y-7 lg:space-y-8">
         <div class="space-y-4 lg:space-y-5">
-          <SectionLabel number="04" title="CONTACT" />
+          <SectionLabel number="04" title={t.contact.label} />
 
           <h2
             class="font-heading text-3xl leading-tight font-bold tracking-[-1.2px] sm:text-4xl sm:tracking-[-1.5px] lg:text-6xl lg:leading-15"
           >
-            Hablemos de tu Biótopo
+            {t.contact.title}
           </h2>
         </div>
 
         <p
           class="text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7 lg:text-[18px] lg:leading-8"
         >
-          Cada gran evolución comienza con un solo impulso. Estamos listos para escuchar los retos
-          de tu organización y diseñar la arquitectura que potencie tu visión.
+          {t.contact.description}
         </p>
 
         <div class="space-y-3 pt-2 sm:space-y-4">
@@ -36,7 +40,7 @@ import ContactForm from './ContactForm.astro';
             </span>
             <div>
               <p class="font-mono text-[9px] font-bold tracking-[2.5px] text-neutral-500 uppercase">
-                Email
+                {t.contact.email.label}
               </p>
               <p class="text-sm font-semibold text-neutral-900 sm:text-base">hello@cofol.lab</p>
             </div>
@@ -52,10 +56,10 @@ import ContactForm from './ContactForm.astro';
             </span>
             <div>
               <p class="font-mono text-[9px] font-bold tracking-[2.5px] text-neutral-500 uppercase">
-                Location
+                {t.contact.location.label}
               </p>
               <p class="text-sm font-semibold text-neutral-900 sm:text-base">
-                Remote First / Global Operations
+                {t.contact.location.value}
               </p>
             </div>
           </div>

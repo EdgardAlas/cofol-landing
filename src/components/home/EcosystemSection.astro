@@ -2,21 +2,26 @@
 import SectionLabel from '../SectionLabel.astro';
 import ServiceCard from '../ui/ServiceCard.astro';
 import { Blocks, Bot, Database, Waypoints, Wrench, Workflow } from '@lucide/astro';
+import { getCurrentLocale } from '../../i18n/utils';
+import { home } from '../../i18n/translations/home';
+
+const lang = getCurrentLocale(Astro.currentLocale);
+const t = home[lang];
 ---
 
 <section class="bg-neutral-100" id="ecosystem">
   <div class="container mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
     <div class="space-y-10 sm:space-y-12">
       <div class="space-y-4">
-        <SectionLabel number="02" title="ECOSYSTEM SERVICES" />
+        <SectionLabel number="02" title={t.ecosystem.label} />
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end">
           <h2
             class="font-heading flex-1 text-4xl leading-none font-bold tracking-[-1.5px] sm:text-5xl lg:text-6xl lg:leading-15"
           >
-            Servicios de Adaptación Cognitiva
+            {t.ecosystem.title}
           </h2>
           <p class="text-base leading-7 text-neutral-700 lg:max-w-xs lg:text-right">
-            Arquitecturas diseñadas para evolucionar con la complejidad de su organización.
+            {t.ecosystem.description}
           </p>
         </div>
       </div>
@@ -25,22 +30,22 @@ import { Blocks, Bot, Database, Waypoints, Wrench, Workflow } from '@lucide/astr
         <div class="flex flex-col gap-4 lg:col-span-2">
           <ServiceCard
             variant="large"
-            title="Full Stack"
-            description="Desarrollo integral de interfaces simbióticas y arquitecturas resilientes."
+            title={t.ecosystem.fullstack.title}
+            description={t.ecosystem.fullstack.description}
             icon={Blocks}
             class="flex-1"
           />
           <div class="grid gap-4 sm:grid-cols-2">
             <ServiceCard
               variant="small"
-              title="Backend APIs"
-              description="Sistemas nerviosos centrales robustos y escalables."
+              title={t.ecosystem.backend.title}
+              description={t.ecosystem.backend.description}
               icon={Waypoints}
             />
             <ServiceCard
               variant="small"
-              title="Data Engineering"
-              description="Tratamiento de flujos de datos como recursos naturales críticos."
+              title={t.ecosystem.data.title}
+              description={t.ecosystem.data.description}
               icon={Database}
             />
           </div>
@@ -49,13 +54,13 @@ import { Blocks, Bot, Database, Waypoints, Wrench, Workflow } from '@lucide/astr
         <div class="flex flex-col gap-4">
           <ServiceCard
             variant="featured"
-            title="AI / Automation"
-            description="Inteligencia artificial integrada para optimizar el flujo de trabajo biológico-digital."
+            title={t.ecosystem.ai.title}
+            description={t.ecosystem.ai.description}
             icon={Bot}
             class="flex-1"
           />
-          <ServiceCard variant="compact" title="System Integration" icon={Workflow} />
-          <ServiceCard variant="compact" title="Maintenance" icon={Wrench} />
+          <ServiceCard variant="compact" title={t.ecosystem.integration.title} icon={Workflow} />
+          <ServiceCard variant="compact" title={t.ecosystem.maintenance.title} icon={Wrench} />
         </div>
       </div>
     </div>

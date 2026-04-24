@@ -18,7 +18,17 @@ export default defineConfig({
   },
 
   output: 'server',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es',
+          en: 'en',
+        },
+      },
+    }),
+  ],
 
   adapter: node({
     mode: 'standalone',
@@ -26,5 +36,13 @@ export default defineConfig({
 
   security: {
     checkOrigin: false,
+  },
+
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
   },
 });

@@ -1,12 +1,19 @@
 ---
 import IconMenu from './icons/IconMenu.astro';
 import IconClose from './icons/IconClose.astro';
+import LanguagePicker from './LanguagePicker.astro';
+import { getCurrentLocale, getLocaleUrl } from '../i18n/utils';
+import { common } from '../i18n/translations/common';
+
+const lang = getCurrentLocale(Astro.currentLocale);
+const t = common[lang];
+const base = getLocaleUrl(lang);
 
 const navLinks = [
-  { label: 'Genesis', href: '/#genesis' },
-  { label: 'Ecosystem', href: '/#ecosystem' },
-  { label: 'Philosophy', href: '/#philosophy' },
-  { label: 'Contact', href: '/#contact' },
+  { label: t.nav.genesis, href: `${base}#genesis` },
+  { label: t.nav.ecosystem, href: `${base}#ecosystem` },
+  { label: t.nav.philosophy, href: `${base}#philosophy` },
+  { label: t.nav.contact, href: `${base}#contact` },
 ];
 ---
 
@@ -18,7 +25,10 @@ const navLinks = [
     class="container mx-auto grid grid-cols-2 items-center px-4 py-4 sm:px-6 md:grid-cols-3 lg:px-8"
   >
     <div class="flex justify-start">
-      <a href="/" class="font-heading text-xl font-extrabold tracking-tight text-neutral-950">
+      <a
+        href={getLocaleUrl(lang)}
+        class="font-heading text-xl font-extrabold tracking-tight text-neutral-950"
+      >
         COFOL
       </a>
     </div>
@@ -40,7 +50,8 @@ const navLinks = [
       </ul>
     </div>
 
-    <div class="flex justify-end">
+    <div class="flex items-center justify-end gap-2">
+      <LanguagePicker />
       <button
         id="menu-toggle"
         aria-label="Toggle menu"
