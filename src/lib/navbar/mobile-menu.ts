@@ -22,8 +22,18 @@ export function initMobileMenu() {
   });
 
   mobileLinks.forEach((link) => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
+      if (!isOpen) return;
+      const targetId = (link as HTMLAnchorElement).getAttribute('href')?.split('#')[1];
+      const targetEl = targetId ? document.getElementById(targetId) : null;
       updateMenuState(false);
+      if (!targetEl) return;
+      e.preventDefault();
+      menu.addEventListener(
+        'transitionend',
+        () => targetEl.scrollIntoView({ behavior: 'smooth' }),
+        { once: true }
+      );
     });
   });
 }

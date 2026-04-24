@@ -15,9 +15,11 @@ const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/
 <div class="relative" id="lang-switcher">
   <button
     id="lang-btn"
-    aria-haspopup="true"
+    aria-haspopup="menu"
     aria-expanded="false"
-    class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-neutral-500 transition-colors hover:bg-neutral-200 hover:text-neutral-950"
+    aria-controls="lang-menu"
+    aria-label={`Language: ${languages[lang as keyof typeof languages]}. Select language`}
+    class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-neutral-500 transition-colors hover:bg-neutral-200 hover:text-neutral-950 focus-visible:outline-2 focus-visible:outline-neutral-400"
   >
     <span class="font-mono uppercase">{lang}</span>
     <ChevronDown
@@ -31,6 +33,7 @@ const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/
   <ul
     id="lang-menu"
     role="menu"
+    aria-label="Language options"
     class="invisible absolute top-full right-0 mt-1 min-w-30 overflow-hidden rounded-xl border border-neutral-200 bg-white opacity-0 shadow-lg transition-all duration-200"
   >
     {
@@ -39,9 +42,13 @@ const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/
           <a
             href={getLocaleUrl(l as Locale, currentPath)}
             role="menuitem"
+            tabindex="-1"
+            aria-current={l === lang ? 'true' : undefined}
             class:list={[
-              'flex items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-neutral-100',
-              l === lang ? 'text-primary-600' : 'text-neutral-600 hover:text-neutral-950',
+              'flex items-center justify-between gap-3 px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none',
+              l === lang
+                ? 'text-primary-600'
+                : 'text-neutral-600 hover:text-neutral-950 focus:text-neutral-950',
             ]}
           >
             {label}
@@ -54,29 +61,39 @@ const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/
 </div>
 
 <script>
-  const btn = document.getElementById('lang-btn');
+  const btn = document.getElementById('lang-btn') as HTMLButtonElement | null;
   const menu = document.getElementById('lang-menu');
   const chevron = document.getElementById('lang-chevron');
+
+  function getMenuItems(): HTMLElement[] {
+    return Array.from(menu?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []);
+  }
 
   function openMenu() {
     menu?.classList.remove('invisible', 'opacity-0');
     menu?.classList.add('opacity-100');
     btn?.setAttribute('aria-expanded', 'true');
     chevron?.classList.add('rotate-180');
+    const items = getMenuItems();
+    const current = items.find((el) => el.getAttribute('aria-current') === 'true') ?? items[0];
+    current?.focus();
   }
 
-  function closeMenu() {
+  function closeMenu(returnFocus = false) {
     menu?.classList.add('invisible', 'opacity-0');
     menu?.classList.remove('opacity-100');
     btn?.setAttribute('aria-expanded', 'false');
     chevron?.classList.remove('rotate-180');
+    if (returnFocus) btn?.focus();
+  }
+
+  function isOpen() {
+    return btn?.getAttribute('aria-expanded') === 'true';
   }
 
   btn?.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isOpen = btn.getAttribute('aria-expanded') === 'true';
-
-    if (isOpen) {
+    if (isOpen()) {
       return closeMenu();
     }
 
@@ -86,6 +103,36 @@ const currentPath = localePrefix ? pathname.slice(localePrefix.length + 1) || '/
   document.addEventListener('click', () => closeMenu());
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
+    if (!isOpen()) return;
+
+    const items = getMenuItems();
+    const focused = document.activeElement as HTMLElement;
+    const idx = items.indexOf(focused);
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      items[(idx + 1) % items.length]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      items[(idx - 1 + items.length) % items.length]?.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      items[0]?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      items[items.length - 1]?.focus();
+    } else if (e.key === 'Tab') {
+      closeMenu();
+    } else if (e.key === 'Escape') {
+      e.stopPropagation();
+      closeMenu(true);
+    }
+  });
+
+  document.getElementById('lang-switcher')?.addEventListener('focusout', (e) => {
+    const relatedTarget = (e as FocusEvent).relatedTarget as Node | null;
+    if (!document.getElementById('lang-switcher')?.contains(relatedTarget)) {
+      closeMenu();
+    }
   });
 </script>
