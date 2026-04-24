@@ -3,11 +3,22 @@ export function initActiveLinks() {
   const BOTTOM_THRESHOLD = 50;
   const CURRENT_SECTION_BONUS = 10;
 
+  const getSectionIdFromHref = (href: string | null) => {
+    if (!href) return null;
+    const hashIndex = href.indexOf('#');
+    if (hashIndex === -1) return null;
+
+    const id = href.slice(hashIndex + 1).trim();
+    return id.length > 0 ? id : null;
+  };
+
   const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
   const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link');
   const allLinks = [...Array.from(desktopLinks), ...Array.from(mobileLinks)];
 
-  const sectionIds = Array.from(desktopLinks).map((link) => link.getAttribute('href')!.slice(1));
+  const sectionIds = Array.from(desktopLinks)
+    .map((link) => getSectionIdFromHref(link.getAttribute('href')))
+    .filter((id): id is string => id !== null);
 
   const sections = sectionIds
     .map((id) => document.getElementById(id))
@@ -58,7 +69,7 @@ export function initActiveLinks() {
       activeId = activeCandidate;
 
       allLinks.forEach((link) => {
-        const targetId = link.getAttribute('href')!.slice(1);
+        const targetId = getSectionIdFromHref(link.getAttribute('href'));
         if (targetId === activeId) {
           link.dataset.active = '';
         } else {
