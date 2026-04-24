@@ -22,9 +22,7 @@ export async function checkRateLimit(identifier: string, options: RateLimitOptio
   if (count > limit) {
     throw new ActionError({
       code: 'TOO_MANY_REQUESTS',
-      message:
-        message ??
-        'Has alcanzado el límite de solicitudes. Por favor, inténtalo de nuevo más tarde.',
+      message: message ?? 'Has alcanzado el límite de solicitudes. Por favor, inténtalo de nuevo más tarde.',
     });
   }
 }
